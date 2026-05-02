@@ -33,7 +33,7 @@ public class FileStorageService {
         }
     }
 
-    private void delete(String relativePath) {
+    public void delete(String relativePath) {
         try {
             Files.deleteIfExists(Path.of(uploadDir, relativePath));
         } catch (IOException e) {
