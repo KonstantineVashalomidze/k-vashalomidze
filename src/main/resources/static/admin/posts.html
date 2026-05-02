@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Manage Posts</title>
+</head>
+<body>
+    <h1>Manage Posts</h1>
+    <nav>
+        <a href="index.html">Admin Dashboard</a>
+        <a href="profile.html">Manage Profile</a>
+        <a href="education.html">Manage Education</a>
+        <a href="resumes.html">Manage Resumes</a>
+        <a href="subscribers.html">Manage Subscribers</a>
+        <a href="posts.html">Manage Posts</a>
+    </nav>
+
+    <h2>Add New</h2>
+    <input id="title" type="text" placeholder="Title" /><br/>
+    <textarea id="description" placeholder="Short description"></textarea><br/>
+    <textarea id="referencesLink" placeholder="References link"></textarea><br/>
+    <textarea id="richContent" placeholder="Rich content"></textarea><br/>
+    <label><input id="isProject" type="checkbox" /> Is Project</label><br/>
+    <button onclick="createPost()">Create</button>
+
+    <h2>Existing</h2>
+    <div id="list"></div>
+
+    <script>
+        async function load() {
+            const res = await fetch('/api/v1/public/posts');
+            const data = await res.json();
+            document.getElementById('list').innerHTML = data.content.map(p => `
+        <div class="card">
+          <div>
+            <strong>${p.title}</strong>${p.project ? ' 🚀' : ''}<br/>
+            <p>${p.description || ''}</p>
+            <button onclick="deletePost(${p.id})">Delete</button>
+          </div>
+        </div>
+      `).join('');
+        }
+
+        async function createPost() {
+            await fetch('/api/v1/admin/posts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: document.getElementById('title').value,
+                    description: document.getElementById('description').value,
+                    referencesLink: document.getElementById('referencesLink').value,
+                    richContent: document.getElementById('richContent').value,
+                    isProject: document.getElementById('isProject').checked
+                })
+            });
+            load();
+        }
+
+        async function deletePost(id) {
+            await fetch('/api/v1/admin/posts/' + id, { method: 'DELETE' });
+            load();
+        }
+
+        load();
+    </script>
+</body>
+</html>
