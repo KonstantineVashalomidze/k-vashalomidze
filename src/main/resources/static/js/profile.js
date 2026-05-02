@@ -43,8 +43,14 @@ document.getElementById('sub-btn').addEventListener('click', async () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
     });
-    document.getElementById('sub-msg').textContent = (res.status === 201) ? 'Successful '
-        : 'Unsuccessful' + 'subscription';
+    const yes = confirm("Are you sure?")
+    if (yes) {
+        if (res.status === 201) {
+            alert("Successfully Subscribed!");
+        } else {
+            alert("Failed to Subscribe!");
+        }
+    }
 });
 
 loadProfile();

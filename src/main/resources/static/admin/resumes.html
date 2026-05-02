@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Manage Resumes</title>
+</head>
+<body>
+    <h1>Manage Resumes</h1>
+
+    <nav>
+        <a href="index.html">Admin Dashboard</a>
+        <a href="profile.html">Manage Profile</a>
+        <a href="education.html">Manage Education</a>
+        <a href="resumes.html">Manage Resumes</a>
+        <a href="subscribers.html">Manage Subscribers</a>
+    </nav>
+
+    <h2>Upload New</h2>
+    <input id="versionLabel" type="text" placeholder="Version label (e.g. v2.1)" /><br/>
+    <input id="file" type="file" /><br/>
+    <button onclick="upload()">Upload</button>
+
+    <h2>Existing</h2>
+    <div id="list"></div>
+
+    <script>
+        async function load() {
+            const res = await fetch('/api/v1/public/profile');
+            const data = await res.json();
+            document.getElementById('list').innerHTML = data.resumes.map(r => `
+        <div class="card">
+          <div>
+            <strong>${r.versionLabel}</strong> — ${r.originalFilename}<br/>
+            <a href="/uploads/${r.filePath}" download>Download</a>
+            <button onclick="deleteResume(${r.id})">Delete</button>
+          </div>
+        </div>
+      `).join('');
+        }
+
+        async function upload() {
+            const form = new FormData();
+            form.append('versionLabel', document.getElementById('versionLabel').value);
+            form.append('file', document.getElementById('file').files[0]);
+            await fetch('/api/v1/admin/resumes', { method: 'POST', body: form });
+            load();
+        }
+
+        async function deleteResume(id) {
+            await fetch('/api/v1/admin/resumes/' + id, { method: 'DELETE' });
+            load();
+        }
+
+        load();
+    </script>
+
+
+
+</body>
+</html>
