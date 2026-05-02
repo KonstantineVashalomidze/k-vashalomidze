@@ -1,0 +1,53 @@
+body {
+    font-family: sans-serif;
+    max-width: 900px;
+    margin: auto;
+    padding: 1rem;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.card img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+#charisma-btn {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+#subscribe-section input {
+    display: block;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    width: 300px;
+}

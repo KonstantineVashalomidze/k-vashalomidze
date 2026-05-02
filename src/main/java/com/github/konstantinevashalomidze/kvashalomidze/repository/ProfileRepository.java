@@ -1,10 +1,11 @@
 package com.github.konstantinevashalomidze.kvashalomidze.repository;
 
-import com.github.konstantinevashalomidze.kvashalomidze.model.document.Profile;
-import org.springframework.data.repository.CrudRepository;
+import com.github.konstantinevashalomidze.kvashalomidze.model.document.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ProfileRepository extends CrudRepository<Profile, Long> {
-    Optional<Profile> findTopByOrderByIdDesc();
+public interface ProfileRepository extends JpaRepository<Profile, Long> {
+    Optional<Profile> findFirstByOrderByIdDesc();
 }
+

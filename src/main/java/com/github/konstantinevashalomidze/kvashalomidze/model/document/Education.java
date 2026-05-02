@@ -5,17 +5,23 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Contact {
+public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String phone, email, linkedin, github, facebook;
-    private String leetcode, hackerrank, codeforces, typeRacer;
+    private String title, instituteName, instituteUrl, logoFilePath;
+
     @Column(columnDefinition = "TEXT")
-    private String typeRacerBadgeHtml;
+    private String description;
+
+    private Instant startDate, endDate;
+
+
 }
