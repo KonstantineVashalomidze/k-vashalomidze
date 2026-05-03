@@ -24,9 +24,10 @@
     document.title = p.title;
     document.getElementById('post').innerHTML = `
         <h1>${p.title} ${p.project ? '*' : ''}</h1>
-        <small>Posted: ${new Date(p.createdAt).toLocaleDateString()}
-               Updated: ${new Date(p.updatedAt).toLocaleDateString()}
-               Likes: ${p.likeCount}
+        <small>
+          Posted: <span id="created">${new Date(p.createdAt).toLocaleDateString()}</span>
+          Updated: <span id="updated">${new Date(p.updatedAt).toLocaleDateString()}</span>
+          Likes: <span id="likes">${p.likeCount}</span>
         </small>
         <p>${p.description}</p>
         <hr/>
@@ -39,7 +40,8 @@
   async function like() {
     const res = await fetch(`/api/v1/public/posts/${id}/like`, { method: 'POST' });
     const data = await res.json();
-    alert('Likes: ' + data.likeCount);
+    const small = document.querySelector('#post #likes');
+    small.textContent = data.likeCount;
   }
 
   load();
