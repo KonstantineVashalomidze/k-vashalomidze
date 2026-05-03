@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Manage Contacts</title>
+</head>
+<body>
+<h1>Manage Contacts</h1>
+
+<nav>
+    <a href="index.html">Admin Dashboard</a>
+    <a href="profile.html">Manage Profile</a>
+    <a href="education.html">Manage Education</a>
+    <a href="resumes.html">Manage Resumes</a>
+    <a href="subscribers.html">Manage Subscribers</a>
+    <a href="posts.html">Manage Posts</a>
+    <a href="contacts.html">Manage Contacts</a>
+</nav>
+
+<h2>Save Contacts</h2>
+<input id="codeforces" type="text" placeholder="codeforces" /><br/>
+<input id="email" type="email" placeholder="email" /><br/>
+<input id="facebook" type="text" placeholder="facebook" /><br/>
+<input id="github" type="text" placeholder="github" /><br/>
+<input id="hackerrank" type="text" placeholder="hackerrank" /><br/>
+<input id="leetcode" type="text" placeholder="leetcode" /><br/>
+<input id="linkedin" type="text" placeholder="linkedin"  /><br/>
+<input id="phone" type="text" placeholder="phone" /><br/>
+<input id="typeRacer" type="text" placeholder="typeRacer" /><br/>
+<button onclick="saveContacts()">Save</button>
+
+
+<script>
+    async function loadContacts() {
+        const res = await fetch('/api/v1/public/profile');
+        const data = await res.json();
+        const p = data.contact;
+        document.getElementById('codeforces').value =   p.codeforces;
+        document.getElementById('email').value      =   p.email;
+        document.getElementById('facebook').value   =   p.facebook;
+        document.getElementById('github').value     =   p.github;
+        document.getElementById('hackerrank').value =   p.hackerrank;
+        document.getElementById('leetcode').value   =   p.leetcode;
+        document.getElementById('linkedin').value   =   p.linkedin;
+        document.getElementById('phone').value      =   p.phone;
+        document.getElementById('typeRacer').value  =   p.typeRacer;
+
+    }
+    /*
+    * https://codeforces.com/profile/Mamaafrica
+    * vashalomidzekonstantine@gmail.com
+    * https://www.facebook.com/k.onst.ant.ine.vashalomidze.2025
+    * https://github.com/KonstantineVashalomidze
+    * https://www.hackerrank.com/profile/k_vashalomidze
+    * https://leetcode.com/u/kiu2022fallMama0africa/
+    * https://www.linkedin.com/in/konstantine-vashalomidze-b3aa381ba/
+    * +995 500 051 394
+    * https://data.typeracer.com/pit/profile?user=mamaafrica
+    * */
+
+    async function saveContacts() {
+        const yes = confirm("Are you sure?")
+        if (yes) {
+            const form = new FormData();
+            form.append('codeforces',       document.getElementById('codeforces').value);
+            form.append('email', document.getElementById('email').value     );
+            form.append('facebook',    document.getElementById('facebook').value  );
+            form.append('github',    document.getElementById('github').value    );
+            form.append('hackerrank',    document.getElementById('hackerrank').value);
+            form.append('leetcode',    document.getElementById('leetcode').value  );
+            form.append('linkedin',    document.getElementById('linkedin').value  );
+            form.append('phone',    document.getElementById('phone').value     );
+            form.append('typeRacer',    document.getElementById('typeRacer').value );
+
+            const res = await fetch('/api/v1/admin/profile/contacts', {
+                method: 'PUT',
+                body: form
+            });
+            if (res.status === 201) {
+                alert("Saved successfully!");
+            } else {
+                alert("Failed to Save Contacts!");
+            }
+        }
+    }
+
+    loadContacts();
+</script>
+</body>
+</html>

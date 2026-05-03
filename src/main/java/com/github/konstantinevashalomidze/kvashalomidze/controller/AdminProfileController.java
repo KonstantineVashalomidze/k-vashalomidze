@@ -1,6 +1,8 @@
 package com.github.konstantinevashalomidze.kvashalomidze.controller;
 
+import com.github.konstantinevashalomidze.kvashalomidze.model.document.Contact;
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Profile;
+import com.github.konstantinevashalomidze.kvashalomidze.repository.ContactRepository;
 import com.github.konstantinevashalomidze.kvashalomidze.repository.ProfileRepository;
 import com.github.konstantinevashalomidze.kvashalomidze.service.FileStorageService;
 import org.springframework.http.HttpStatus;
@@ -17,10 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminProfileController {
     private final ProfileRepository profileRepository;
     private final FileStorageService fileStorageService;
+    private final ContactRepository contactRepository;
 
-    public AdminProfileController(ProfileRepository profileRepository, FileStorageService fileStorageService) {
+    public AdminProfileController(ProfileRepository profileRepository, FileStorageService fileStorageService, ContactRepository contactRepository) {
         this.profileRepository = profileRepository;
         this.fileStorageService = fileStorageService;
+        this.contactRepository = contactRepository;
     }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -43,6 +47,34 @@ public class AdminProfileController {
         profileRepository.save(p);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+
+    @PutMapping("/contacts")
+    public ResponseEntity<?> updateContacts(
+            @RequestParam String codeforces,
+            @RequestParam String email,
+            @RequestParam String facebook,
+            @RequestParam String github,
+            @RequestParam String hackerrank,
+            @RequestParam String leetcode,
+            @RequestParam String linkedin,
+            @RequestParam String phone,
+            @RequestParam String typeRacer
+    ) {
+        Contact contact = contactRepository.findFirstByOrderByIdDesc().orElse(new Contact());
+        contact.setCodeforces(codeforces);
+        contact.setEmail(email);
+        contact.setFacebook(facebook);
+        contact.setGithub(github);
+        contact.setHackerrank(hackerrank);
+        contact.setLeetcode(leetcode);
+        contact.setLinkedin(linkedin);
+        contact.setPhone(phone);
+        contact.setTypeRacer(typeRacer);
+        contactRepository.save(contact);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
 
 
 

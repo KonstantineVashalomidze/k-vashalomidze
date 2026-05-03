@@ -10,8 +10,6 @@ public class Contact {
 
     private String phone, email, linkedin, github, facebook;
     private String leetcode, hackerrank, codeforces, typeRacer;
-    @Column(columnDefinition = "TEXT")
-    private String typeRacerBadgeHtml;
 
     public Long getId() {
         return id;
@@ -93,11 +91,6 @@ public class Contact {
         this.typeRacer = typeRacer;
     }
 
-    public String getTypeRacerBadgeHtml() {
-        return typeRacerBadgeHtml;
-    }
 
-    public void setTypeRacerBadgeHtml(String typeRacerBadgeHtml) {
-        this.typeRacerBadgeHtml = typeRacerBadgeHtml;
-    }
+
 }
