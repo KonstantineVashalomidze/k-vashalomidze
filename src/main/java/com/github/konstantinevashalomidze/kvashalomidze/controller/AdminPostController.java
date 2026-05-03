@@ -22,7 +22,7 @@ public class AdminPostController {
         p.setDescription((String) body.get("description"));
         p.setReferencesLink((String) body.get("referencesLink"));
         p.setTags((String) body.get("richContent"));
-        p.setProject((Boolean) body.get("project"));
+        p.setProject((Boolean) body.get("isProject"));
         postRepository.save(p);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

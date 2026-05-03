@@ -3,7 +3,7 @@ async function loadProfile() {
     const data = await res.json();
 
     const p = data.profile;
-
+    console.log(p.name);
     document.getElementById('profile-header').innerHTML = `
     <img src="${'/uploads/' + p.imageFilePath}" alt="profile" />
     <h1>${p.name}</h1>

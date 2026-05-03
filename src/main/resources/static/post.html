@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Post</title>
+</head>
+<body>
+<nav>
+  <a href="index.html">Profile</a>
+  <a href="posts.html">Posts</a>
+</nav>
+<div id="post"></div>
+<script>
+  const id = new URLSearchParams(window.location.search).get('id');
+
+  async function load() {
+    const res = await fetch(`/api/v1/public/posts/${id}`);
+    const p = await res.json();
+
+    document.title = p.title;
+    document.getElementById('post').innerHTML = `
+        <h1>${p.title} ${p.project ? '*' : ''}</h1>
+        <small>Posted: ${new Date(p.createdAt).toLocaleDateString()}
+               Updated: ${new Date(p.updatedAt).toLocaleDateString()}
+               Likes: ${p.likeCount}
+        </small>
+        <p>${p.description}</p>
+        <hr/>
+        <div>${p.richContent}</div>
+        ${p.referencesLink ? `<p><a href="${p.referencesLink}" target="_blank">References</a></p>` : ''}
+        <button onclick="like()">Like</button>
+      `;
+  }
+
+  async function like() {
+    const res = await fetch(`/api/v1/public/posts/${id}/like`, { method: 'POST' });
+    const data = await res.json();
+    alert('Likes: ' + data.likeCount);
+  }
+
+  load();
+</script>
+</body>
+</html>

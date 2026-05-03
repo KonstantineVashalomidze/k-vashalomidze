@@ -34,9 +34,9 @@ public class AdminEducationController {
         e.setTitle(title);
         e.setInstituteName(instituteName);
         e.setInstituteUrl(instituteUrl);
-        e.setStartDate(Instant.parse(startDate + "''T00:00:00Z"));
+        e.setStartDate(Instant.parse(startDate + "T00:00:00Z"));
         if (endDate != null && !endDate.isEmpty()) {
-            e.setEndDate(Instant.parse(endDate + "''T00:00:00Z"));
+            e.setEndDate(Instant.parse(endDate + "T00:00:00Z"));
         }
         e.setDescription(description);
 

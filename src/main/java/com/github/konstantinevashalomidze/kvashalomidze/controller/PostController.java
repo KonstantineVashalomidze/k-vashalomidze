@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/v1/public/posts")
@@ -38,6 +40,14 @@ public class PostController {
         return postRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/{id}/like")
+    public ResponseEntity<?> like(@PathVariable Long id) {
+        Post p = postRepository.findById(id).orElseThrow();
+        p.setLikeCount(p.getLikeCount() + 1);
+        postRepository.save(p);
+        return ResponseEntity.ok(Map.of("likeCount", p.getLikeCount()));
     }
 
 }

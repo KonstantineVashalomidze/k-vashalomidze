@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Posts</title>
+</head>
+<body>
+    <h1>Posts</h1>
+    <nav>
+        <a href="index.html">Profile</a>
+        <a href="posts.html">Posts</a>
+    </nav>
+
+    <input id="search" type="text" placeholder="Search posts..." />
+    <button onclick="load()">Search</button>
+
+    <div id="list"></div>
+
+    <div id="pagination">
+        <button id="prev" onclick="changePage(-1)">Prev</button>
+        <span id="page-info"></span>
+        <button id="next" onclick="changePage(1)">Next</button>
+    </div>
+
+    <script>
+        let currentPage = 0;
+        let totalPages = 0;
+
+        async function load() {
+            const search = document.getElementById('search').value;
+            const res = await fetch(`/api/v1/public/posts?search=${search}&page=${currentPage}&size=10`);
+            const data = await res.json();
+            totalPages = data.totalPages;
+
+            document.getElementById('list').innerHTML = data.content.map(p => `
+        <div class="card" onclick="window.location='/post.html?id=${p.id}'" style="cursor:pointer">
+          <div>
+            <h3>${p.title} ${p.project ? '*' : ''}</h3>
+            <p>${p.description}</p>
+            <small>Posted: ${new Date(p.createdAt).toLocaleDateString()}
+                   Updated: ${new Date(p.updatedAt).toLocaleDateString()}
+                   Likes: ${p.likeCount}
+            </small>
+          </div>
+        </div>
+      `).join('');
+
+            document.getElementById('page-info').textContent = `Page ${currentPage + 1} of ${totalPages}`;
+            document.getElementById('prev').disabled = currentPage === 0;
+            document.getElementById('next').disabled = currentPage >= totalPages - 1;
+        }
+
+        function changePage(dir) {
+            currentPage += dir;
+            load();
+        }
+
+        load();
+    </script>
+
+</body>
+</html>

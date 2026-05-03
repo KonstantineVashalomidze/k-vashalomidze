@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Manage Subscribers</title>
+</head>
+<body>
+<h1>Manage Subscribers</h1>
+<nav>
+    <a href="index.html">Admin Dashboard</a>
+    <a href="profile.html">Manage Profile</a>
+    <a href="education.html">Manage Education</a>
+    <a href="resumes.html">Manage Resumes</a>
+    <a href="subscribers.html">Manage Subscribers</a>
+    <a href="posts.html">Manage Posts</a>
+</nav>
+
+<div id="list"></div>
+
+
+<h2>Send Email to All</h2>
+<textarea id="emailText" placeholder="Email content..."></textarea><br/>
+<button onclick="sendEmail()">Send</button>
+<p id="msg"></p>
+
+<script>
+    async function load() {
+        const res = await fetch('/api/v1/admin/subscribers');
+        const data = await res.json();
+        document.getElementById('list').innerHTML = data.map(s => `
+        <div class="card">
+          <p>${s.email} — <small>${new Date(s.subscribedAt).toLocaleDateString()}</small></p>
+        </div>
+      `).join('');
+    }
+
+    async function sendEmail() {
+        const text = document.getElementById('emailText').value;
+        const res = await fetch('/api/v1/admin/subscribers/email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text })
+        });
+
+        const yes = confirm("Are you sure?")
+        if (yes) {
+            if (res.status === 201) {
+                alert("Successfully Sent!");
+            } else {
+                alert("Failed to Send!");
+            }
+        }
+    }
+
+    load();
+</script>
+
+</body>
+</html>
