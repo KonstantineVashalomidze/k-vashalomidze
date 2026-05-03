@@ -17,14 +17,20 @@ async function loadProfile() {
       <img src="/uploads/${e.logoFilePath}" alt="logo" onerror="this.style.display='none'" />
       <h3><a href="${e.instituteUrl}" target="_blank">${e.title}</a></h3>
       <p>${e.instituteName}</p>
-      <p>${e.startDate} – ${e.endDate || 'Present'}</p>
+      <p>${new Date(e.startDate).toLocaleString(undefined, {
+        year: 'numeric',
+        month: 'short',
+    })} – ${new Date(e.endDate).toLocaleString(undefined, {
+        year: 'numeric',
+        month: 'short',
+    }) || 'Present'}</p>
       <p>${e.description}</p>
     </div>
   `).join('');
     document.getElementById('education').innerHTML = `<h2>Education</h2>${edu}`;
 
     const resumes = data.resumes.map(r => `
-    <div><a href="/uploads/${r.filePath}" download>${r.id}</a></div>
+    <div>${r.versionLabel} <a href="/uploads/${r.filePath}" download>${r.originalFilename}</a>  ${new Date(r.uploadedAt).toLocaleString()}</div>
   `).join('');
     document.getElementById('resumes').innerHTML = `<h2>Resumes</h2>${resumes}`;
     document.getElementById('charisma-count').textContent = data.profile.charismaCount;
