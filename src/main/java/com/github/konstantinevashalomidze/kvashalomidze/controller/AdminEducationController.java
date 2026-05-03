@@ -3,7 +3,6 @@ package com.github.konstantinevashalomidze.kvashalomidze.controller;
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Education;
 import com.github.konstantinevashalomidze.kvashalomidze.repository.EducationRepository;
 import com.github.konstantinevashalomidze.kvashalomidze.service.FileStorageService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +13,14 @@ import java.time.Instant;
 
 @RestController
 @RequestMapping("/api/v1/admin/education")
-@RequiredArgsConstructor
 public class AdminEducationController {
     private final EducationRepository educationRepository;
     private final FileStorageService fileStorageService;
 
+    public AdminEducationController(EducationRepository educationRepository, FileStorageService fileStorageService) {
+        this.educationRepository = educationRepository;
+        this.fileStorageService = fileStorageService;
+    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> add(

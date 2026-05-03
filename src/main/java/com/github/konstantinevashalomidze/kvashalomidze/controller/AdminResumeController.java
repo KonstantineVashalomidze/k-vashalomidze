@@ -3,7 +3,6 @@ package com.github.konstantinevashalomidze.kvashalomidze.controller;
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Resume;
 import com.github.konstantinevashalomidze.kvashalomidze.repository.ResumeRepository;
 import com.github.konstantinevashalomidze.kvashalomidze.service.FileStorageService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +13,14 @@ import java.awt.*;
 
 @RestController
 @RequestMapping("/api/v1/admin/resumes")
-@RequiredArgsConstructor
 public class AdminResumeController {
     private final ResumeRepository resumeRepository;
     private final FileStorageService fileStorageService;
+
+    public AdminResumeController(ResumeRepository resumeRepository, FileStorageService fileStorageService) {
+        this.resumeRepository = resumeRepository;
+        this.fileStorageService = fileStorageService;
+    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> upload(
@@ -34,7 +37,7 @@ public class AdminResumeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Resume r = resumeRepository.findById(id).orElseThrow();
+        Resume r = resumeRepository.findById(id).orElse(new Resume());
         fileStorageService.delete(r.getFilePath());
         resumeRepository.deleteById(id);
         return ResponseEntity.ok().build();

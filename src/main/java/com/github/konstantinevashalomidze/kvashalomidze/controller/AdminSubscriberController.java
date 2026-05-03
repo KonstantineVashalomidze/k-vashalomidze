@@ -2,7 +2,6 @@ package com.github.konstantinevashalomidze.kvashalomidze.controller;
 
 import com.github.konstantinevashalomidze.kvashalomidze.repository.SubscriberRepository;
 import com.github.konstantinevashalomidze.kvashalomidze.service.EmailService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +10,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/admin/subscribers")
-@RequiredArgsConstructor
 public class AdminSubscriberController {
     private final SubscriberRepository subscriberRepository;
     private final EmailService emailService;
+
+    public AdminSubscriberController(SubscriberRepository subscriberRepository, EmailService emailService) {
+        this.subscriberRepository = subscriberRepository;
+        this.emailService = emailService;
+    }
 
     @GetMapping
     public ResponseEntity<?> getAll() {

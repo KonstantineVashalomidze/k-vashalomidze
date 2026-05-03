@@ -3,7 +3,6 @@ package com.github.konstantinevashalomidze.kvashalomidze.controller;
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Profile;
 import com.github.konstantinevashalomidze.kvashalomidze.repository.ProfileRepository;
 import com.github.konstantinevashalomidze.kvashalomidze.service.FileStorageService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/admin/profile")
-@RequiredArgsConstructor
 public class AdminProfileController {
     private final ProfileRepository profileRepository;
     private final FileStorageService fileStorageService;
+
+    public AdminProfileController(ProfileRepository profileRepository, FileStorageService fileStorageService) {
+        this.profileRepository = profileRepository;
+        this.fileStorageService = fileStorageService;
+    }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateProfile(
@@ -27,7 +30,7 @@ public class AdminProfileController {
             @RequestParam String aboutMe,
             @RequestParam(required = false) MultipartFile image
         ) {
-        Profile p = profileRepository.findFirstByOrderByIdDesc().orElseThrow();
+        Profile p = profileRepository.findFirstByOrderByIdDesc().orElse(new Profile());
         p.setName(name);
         p.setAboutMe(aboutMe);
         p.setProfession(profession);

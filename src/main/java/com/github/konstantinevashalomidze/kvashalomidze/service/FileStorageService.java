@@ -1,7 +1,5 @@
 package com.github.konstantinevashalomidze.kvashalomidze.service;
 
-import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-@Slf4j
 @Service
 public class FileStorageService {
     @Value("${app.upload-dir}")
@@ -28,7 +25,7 @@ public class FileStorageService {
             Files.copy(file.getInputStream(), dir.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
             return subfolder + "/" + filename;
         } catch (IOException e) {
-            log.error("Error: {} in File: {} with Subfolder: {}", e.getMessage(), file, subfolder);
+            System.out.printf("Error: %s in File: %s with Subfolder: %s", e.getMessage(), file, subfolder);
             throw new RuntimeException(e);
         }
     }
@@ -37,7 +34,7 @@ public class FileStorageService {
         try {
             Files.deleteIfExists(Path.of(uploadDir, relativePath));
         } catch (IOException e) {
-            log.error("Error: {} in File: {} with Subfolder: {}", e.getMessage(), relativePath, uploadDir);
+            System.out.printf("Error: %s in File: %s with Subfolder: %s", e.getMessage(), relativePath, uploadDir);
             throw new RuntimeException(e);
         }
     }

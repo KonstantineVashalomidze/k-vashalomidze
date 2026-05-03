@@ -2,7 +2,6 @@ package com.github.konstantinevashalomidze.kvashalomidze.controller;
 
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Post;
 import com.github.konstantinevashalomidze.kvashalomidze.repository.PostRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +10,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/admin/posts")
-@RequiredArgsConstructor
 public class AdminPostController {
     private final PostRepository postRepository;
+
+    public AdminPostController(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Map<String, Object> body) {
@@ -29,7 +31,7 @@ public class AdminPostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        Post p = postRepository.findById(id).orElseThrow();
+        Post p = postRepository.findById(id).orElse(new Post());
         p.setTitle((String) body.get("title"));
         p.setDescription((String) body.get("description"));
         p.setReferencesLink((String) body.get("referencesLink"));

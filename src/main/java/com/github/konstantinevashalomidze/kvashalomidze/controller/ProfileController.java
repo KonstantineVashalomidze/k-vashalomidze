@@ -1,10 +1,10 @@
 package com.github.konstantinevashalomidze.kvashalomidze.controller;
 
+import com.github.konstantinevashalomidze.kvashalomidze.model.document.Contact;
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Profile;
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Subscriber;
 import com.github.konstantinevashalomidze.kvashalomidze.repository.*;
 import com.github.konstantinevashalomidze.kvashalomidze.service.EmailService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/public/profile")
-@RequiredArgsConstructor
 public class ProfileController {
     private final ProfileRepository profileRepository;
     private final ContactRepository contactRepository;
@@ -23,12 +22,21 @@ public class ProfileController {
 
     private final EmailService emailService;
 
+    public ProfileController(ProfileRepository profileRepository, ContactRepository contactRepository, EducationRepository educationRepository, ResumeRepository resumeRepository, SubscriberRepository subscriberRepository, EmailService emailService) {
+        this.profileRepository = profileRepository;
+        this.contactRepository = contactRepository;
+        this.educationRepository = educationRepository;
+        this.resumeRepository = resumeRepository;
+        this.subscriberRepository = subscriberRepository;
+        this.emailService = emailService;
+    }
+
     @GetMapping
     public ResponseEntity<?> getProfile() {
         return ResponseEntity.ok(
                 Map.of(
-                        "profile", profileRepository.findFirstByOrderByIdDesc().orElseThrow(),
-                        "contact", contactRepository.findFirstByOrderByIdDesc().orElseThrow(),
+                        "profile", profileRepository.findFirstByOrderByIdDesc().orElse(new Profile()),
+                        "contact", contactRepository.findFirstByOrderByIdDesc().orElse(new Contact()),
                         "education", educationRepository.findAll(),
                         "resumes", resumeRepository.findAll(),
                         "subscribers", subscriberRepository.findAll()
@@ -38,7 +46,7 @@ public class ProfileController {
 
     @PostMapping("/charisma")
     public ResponseEntity<?> incrementCharisma() {
-        Profile p = profileRepository.findFirstByOrderByIdDesc().orElseThrow();
+        Profile p = profileRepository.findFirstByOrderByIdDesc().orElse(new Profile());
         p.setCharismaCount(p.getCharismaCount() + 1);
         profileRepository.save(p);
 

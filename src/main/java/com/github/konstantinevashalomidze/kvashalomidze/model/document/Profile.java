@@ -1,14 +1,8 @@
 package com.github.konstantinevashalomidze.kvashalomidze.model.document;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
-@Builder
-@Getter
-@Setter
-@RequiredArgsConstructor
-@AllArgsConstructor
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +15,51 @@ public class Profile {
 
     private Long charismaCount;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public String getImageFilePath() {
+        return imageFilePath;
+    }
+
+    public void setImageFilePath(String imageFilePath) {
+        this.imageFilePath = imageFilePath;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public Long getCharismaCount() {
+        return charismaCount;
+    }
+
+    public void setCharismaCount(Long charismaCount) {
+        this.charismaCount = charismaCount;
+    }
 }

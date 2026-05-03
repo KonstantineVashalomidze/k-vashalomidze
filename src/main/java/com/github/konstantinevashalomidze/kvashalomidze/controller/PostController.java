@@ -2,7 +2,6 @@ package com.github.konstantinevashalomidze.kvashalomidze.controller;
 
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Post;
 import com.github.konstantinevashalomidze.kvashalomidze.repository.PostRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +14,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/public/posts")
-@RequiredArgsConstructor
 public class PostController {
     private final PostRepository postRepository;
+
+    public PostController(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @GetMapping
     public ResponseEntity<?> getPosts(
@@ -44,7 +46,7 @@ public class PostController {
 
     @PostMapping("/{id}/like")
     public ResponseEntity<?> like(@PathVariable Long id) {
-        Post p = postRepository.findById(id).orElseThrow();
+        Post p = postRepository.findById(id).orElse(new Post());
         p.setLikeCount(p.getLikeCount() + 1);
         postRepository.save(p);
         return ResponseEntity.ok(Map.of("likeCount", p.getLikeCount()));
