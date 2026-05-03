@@ -1,6 +1,5 @@
 package com.github.konstantinevashalomidze.kvashalomidze.controller;
 
-import com.github.konstantinevashalomidze.kvashalomidze.model.document.Contact;
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Profile;
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Subscriber;
 import com.github.konstantinevashalomidze.kvashalomidze.repository.*;
@@ -10,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import static java.lang.String.format;
 
 @RestController
 @RequestMapping("/api/v1/public/profile")
@@ -55,8 +51,11 @@ public class ProfileController {
 
     @PostMapping("/subscribe")
     public ResponseEntity<?> subscribe(@RequestBody Map<String, String> b) {
-        Subscriber s = new Subscriber();
         String email = b.get("email");
+        if (subscriberRepository.existsByEmail(email)) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        Subscriber s = new Subscriber();
         s.setEmail(email);
         subscriberRepository.save(s);
         emailService.sendMessage(email, """

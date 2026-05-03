@@ -39,15 +39,14 @@
     }
 
     async function sendEmail() {
-        const text = document.getElementById('emailText').value;
-        const res = await fetch('/api/v1/admin/subscribers/email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text })
-        });
-
         const yes = confirm("Are you sure?")
         if (yes) {
+            const text = document.getElementById('emailText').value;
+            const res = await fetch('/api/v1/admin/subscribers/email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
             if (res.status === 201) {
                 alert("Successfully Sent!");
             } else {

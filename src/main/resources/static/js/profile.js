@@ -37,14 +37,14 @@ document.getElementById('charisma-btn').addEventListener('click', async () => {
 });
 
 document.getElementById('sub-btn').addEventListener('click', async () => {
-    const email = document.getElementById('sub-email').value;
-    const res = await fetch('/api/v1/public/profile/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-    });
     const yes = confirm("Are you sure?")
     if (yes) {
+        const email = document.getElementById('sub-email').value;
+        const res = await fetch('/api/v1/public/profile/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
         if (res.status === 201) {
             alert("Successfully Subscribed!");
         } else {
