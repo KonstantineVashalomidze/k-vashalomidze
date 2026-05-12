@@ -13,7 +13,7 @@ public class Profile {
     @Column(columnDefinition = "TEXT")
     private String aboutMe;
 
-    private Long charismaCount;
+    private Long charismaCount = 0L;
 
     public Long getId() {
         return id;

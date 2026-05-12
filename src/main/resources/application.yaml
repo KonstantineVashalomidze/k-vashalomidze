@@ -40,8 +40,15 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health  # Only expose health, nothing else
+    endpoint:
+      health:
+        show-details: never  # Don't show internal details publicly
 
 
 app:
-  upload-dir: uploads
+  upload-dir: ${APP_UPLOAD_DIR:}

@@ -19,10 +19,10 @@ async function loadProfile() {
       <p>${new Date(e.startDate).toLocaleString(undefined, {
         year: 'numeric',
         month: 'short',
-    })} – ${new Date(e.endDate).toLocaleString(undefined, {
+    })} – ${e.endDate ? new Date(e.endDate).toLocaleString(undefined, {
         year: 'numeric',
         month: 'short',
-    }) || 'Present'}</p>
+    }) : 'Present'}</p>
       <p>${e.description}</p>
     </div>
   `).join('');
