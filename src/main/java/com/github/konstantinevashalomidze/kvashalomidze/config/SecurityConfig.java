@@ -18,6 +18,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/api/v1/public/**").permitAll()
+                        .requestMatchers("/webhook").permitAll()
                         .requestMatchers("/api/v1/admin/**").authenticated()
                         .requestMatchers("/api/v1/newsletter").permitAll()
                         .requestMatchers("/admin/**").authenticated()

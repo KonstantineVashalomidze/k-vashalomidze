@@ -1,20 +1,29 @@
 package com.github.konstantinevashalomidze.kvashalomidze.controller;
 
 import com.github.konstantinevashalomidze.kvashalomidze.model.document.Post;
+import com.github.konstantinevashalomidze.kvashalomidze.model.document.Subscriber;
 import com.github.konstantinevashalomidze.kvashalomidze.repository.PostRepository;
+import com.github.konstantinevashalomidze.kvashalomidze.repository.SubscriberRepository;
+import com.github.konstantinevashalomidze.kvashalomidze.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/admin/posts")
 public class AdminPostController {
     private final PostRepository postRepository;
+    private final EmailService emailService;
+    private final SubscriberRepository subscriberRepository;
 
-    public AdminPostController(PostRepository postRepository) {
+    public AdminPostController(PostRepository postRepository, EmailService emailService, SubscriberRepository subscriberRepository) {
         this.postRepository = postRepository;
+        this.emailService = emailService;
+        this.subscriberRepository = subscriberRepository;
     }
 
     @PostMapping
@@ -26,6 +35,13 @@ public class AdminPostController {
         p.setTags((String) body.get("richContent"));
         p.setProject((Boolean) body.get("isProject"));
         postRepository.save(p);
+        List<Subscriber> subscribers = subscriberRepository.findAll();
+        subscribers.forEach(s -> emailService.sendMessage(s.getEmail(),
+                """
+                     <p>Hello</p>
+                     <p>Check out my new post guys.</p>
+                     """
+                ));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

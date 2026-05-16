@@ -52,3 +52,11 @@ spring:
 
 app:
   upload-dir: ${APP_UPLOAD_DIR:}
+
+telegram:
+  bot:
+    token: 8698861100:AAEVfB1x-DRnv_xrT4VXoslEopI4u_K3-rc
+
+ttc:
+  api:
+    base-url: https://transit.ttc.com.ge/pis-gateway
